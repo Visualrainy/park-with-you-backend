@@ -23,7 +23,7 @@ node {
             }
         }
         stage('docker run') {
-            dir("esms-main") {
+//             dir("esms-main") {
                 sh 'pwd'
                 def imageUrl = "${dockerUrl}/${dockerNamespace}/${dockerName}:${dockerTag}"
                 def customImage = docker.build("park-with-you:${env.BUILD_NUMBER}")
@@ -33,7 +33,7 @@ node {
                 customImage.run("-it -d --name ${dockerName} -p 8090:8090 -e SPRING_PROFILES_ACTIVE=${envTest}")
                 //only retain last 3 images，自动删除老的容器，只保留最近3个
                 sh """docker rmi \$(docker images | grep ${dockerName} | sed -n  '4,\$p' | awk '{print \$3}') || true"""
-            }
+//             }
         }
         currentBuild.result="SUCCESS"
     } catch (e) {
