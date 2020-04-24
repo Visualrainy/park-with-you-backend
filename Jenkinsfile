@@ -30,7 +30,7 @@ node {
                 sh "docker rm -f ${dockerName} | true"
                 //--network esms-net配置网络信息，需要先docker network create esms-net，用于多个服务交互，可选
 //                 customImage.run("-it -d --name ${dockerName} -p 8090:8090 --network esms-net -e SPRING_PROFILES_ACTIVE=${env}")
-                customImage.run("-it -d --name ${dockerName} -p 9090:8090 -e SPRING_PROFILES_ACTIVE=${envTest}")
+                customImage.run("-it -d --name ${dockerName} -p 8090:8080 -e SPRING_PROFILES_ACTIVE=${envTest}")
                 //only retain last 3 images，自动删除老的容器，只保留最近3个
                 sh """docker rmi \$(docker images | grep ${dockerName} | sed -n  '4,\$p' | awk '{print \$3}') || true"""
 //             }
