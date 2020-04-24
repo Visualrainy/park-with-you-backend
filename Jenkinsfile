@@ -26,7 +26,7 @@ node {
             dir("esms-main") {
                 sh 'pwd'
                 def imageUrl = "${dockerUrl}/${dockerNamespace}/${dockerName}:${dockerTag}"
-                def customImage = docker.build("parkWithYou:${env.BUILD_ID}")
+                def customImage = docker.build("parkWithYou")
                 sh "docker rm -f ${dockerName} | true"
                 //--network esms-net配置网络信息，需要先docker network create esms-net，用于多个服务交互，可选
 //                 customImage.run("-it -d --name ${dockerName} -p 8090:8090 --network esms-net -e SPRING_PROFILES_ACTIVE=${env}")
