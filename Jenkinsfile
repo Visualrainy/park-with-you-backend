@@ -17,7 +17,7 @@ node {
         }
         stage('mvn install') {
             sh 'pwd'
-            docker.image('maven:3.6.0-jdk-8-alpine').inside('-v ~/docker/.m2:/root/.m2') {
+            docker.image('maven:3.6.0-jdk-8-alpine').inside('-v /Users/pchen/docker/.m2:/root/.m2') {
                 sh 'mvn --version'
                 sh 'mvn clean install'
             }
