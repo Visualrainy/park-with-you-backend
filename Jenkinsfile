@@ -1,6 +1,6 @@
 node {
     try {
-        def dockerName='parkWithYou-api'
+        def dockerName='parkwithyou-api'
         def envTest='test'
 
         stage('checkout'){
