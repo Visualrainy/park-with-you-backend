@@ -16,6 +16,6 @@ public class TestControllerTest {
 
     @Test
     public void should_test_failed() {
-        Assert.assertEquals(4, 1 + 2);
+        Assert.assertEquals(3, 1 + 2);
     }
 }
