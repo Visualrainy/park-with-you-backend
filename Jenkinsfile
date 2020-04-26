@@ -9,13 +9,12 @@ node {
         }
         stage('build') {
             sh 'pwd'
-            docker.image('maven:3.6.0-jdk-8-alpine').inside('-v /Users/pchen/docker/.m2:/root/.m2') {
-                sh 'mvn --version'
-                sh 'mvn clean install -DskipTests'
-                stage('test') {
-                    sh 'mvn test'
-                }
-            }
+            sh './mvnw --version'
+            sh './mvnw clean install -DskipTests'
+        }
+
+        stage('test') {
+            sh './mvnw test'
         }
 
         stage('docker run') {
