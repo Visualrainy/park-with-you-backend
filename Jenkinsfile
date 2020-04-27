@@ -1,7 +1,7 @@
 node {
     try {
         def dockerName='parkwithyou-api'
-        def envTest='test'
+        def dockerImage=''
 
         stage('checkout'){
             sh 'pwd'
@@ -17,14 +17,26 @@ node {
             sh './mvnw test'
         }
 
-        stage('docker run') {
+        stage('build image') {
             sh 'pwd'
-            def customImage = docker.build("${dockerName}:${env.BUILD_NUMBER}")
-            sh "docker rm -f ${dockerName} | true"
-            customImage.run("-it -d --name ${dockerName} -p 8090:8080 -e SPRING_PROFILES_ACTIVE=${envTest}")
+            dockerImage = docker.build("${dockerName}:${env.BUILD_NUMBER}")
+        }
+
+        stage('deploy dev') {
+            sh 'pwd'
+            sh "docker rm -f ${dockerName}-dev | true"
+            dockerImage.run("-it -d --name ${dockerName}-dev -p 8090:8080 -e SPRING_PROFILES_ACTIVE=dev")
+
             //only retain last 3 images，自动删除老的容器，只保留最近3个
             sh """docker rmi \$(docker images | grep ${dockerName} | sed -n  '4,\$p' | awk '{print \$3}') || true"""
         }
+
+        stage('deploy to prod') {
+            input "Deploy to prod?"
+            sh "docker rm -f ${dockerName}-prod | true"
+            dockerImage.run("-it -d --name ${dockerName}-prod -p 9080:8081 -e SPRING_PROFILES_ACTIVE=prod")
+        }
+
         currentBuild.result="SUCCESS"
     } catch (e) {
         currentBuild.result="FAILURE"
